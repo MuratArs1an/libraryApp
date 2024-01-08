@@ -1,6 +1,6 @@
 import React from "react";
 
-function BookList({books, removeBook}){
+function BookList({books, removeBook, updateBook}){
     return(
     <div>
         <ul>
@@ -10,6 +10,7 @@ function BookList({books, removeBook}){
                     <span>{book.author}</span>
                     <span>{book.pages}</span>
                     <span>{book.stock}</span>
+                    <button onClick={() => updateBook(index)}>Update</button>
                     <button className="removeButton" onClick={() => removeBook(index)}>Remove</button>
                 </li>
             )}

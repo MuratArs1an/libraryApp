@@ -1,42 +1,69 @@
 import './App.css';
 import BookList from './components/BookList';
 import BookForm from './components/BookForm';
-import {useState} from "react"
-
+import {useState,useEffect} from "react"
+import axios from 'axios';
 
 function App() {
-  const[books,setBooks]=useState([
-    {
-        title:"The Lord Of the Rings",
-        author:"J.R.R Tolkien",
-        pages:650,
-        stock:3
-    },
-    {
-      title:"Doctor Sleep",
-      author:"Stephen King",
-      pages:380,
-      stock:1
-  }
-  ])
 
-  const addBook = (newBook) => {
-    setBooks([...books, newBook]);
+  const[books,setBooks]=useState([]);
+
+  //update edilecek book için state
+  const [selectedBook, setSelectedBook] = useState(null);
+
+  //state her değiştiğine refresh olması için
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/book');
+        setBooks(response.data);
+        console.log('Response from server:', response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+  const addBook = async(newBook) => {
+    try{
+
+      //yeni kitap eklemek için post request attık
+      const response=await axios.post('http://localhost:3000/book', newBook);
+
+      //statemizi yeni data ile update ettik
+      setBooks((prevBooks) => [...prevBooks, response.data]);
+    }catch (error) {
+      console.error('Error adding book:', error);
+    }
   };
 
-  const removeBook = (index) => {
-    const updatedBooks = [...books];
-    updatedBooks.splice(index, 1);
-    setBooks(updatedBooks);
+  const removeBook =async (index) => {
+    try {
+      const bookId = books[index]._id;
+      await axios.delete(`http://localhost:3000/book/${bookId}`);
+      setBooks((prevBooks) => {
+        const updatedBooks = [...prevBooks];
+        updatedBooks.splice(index, 1);
+        return updatedBooks;
+      });
+    } catch (error) {
+      console.error('Error removing book:', error);
+    }
+  };
+
+  const updateBook = (book) => {
+    setSelectedBook(book);
   };
 
   return (
     <div className="App">
       LibraryApp
       <div>
-        <BookForm addBook={addBook} />
+        <BookForm addBook={addBook} selectedBook={selectedBook} updateBook={updateBook} />
         <div>
-          <BookList books={books} removeBook={removeBook}/>
+          <BookList books={books} removeBook={removeBook} updateBook={updateBook}/>
         </div>
       </div>
     </div>

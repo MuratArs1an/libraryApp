@@ -1,6 +1,32 @@
-import React from "react";
+import {useState,useEffect} from "react"
 
-function BookForm({ addBook }) {
+function BookForm({ addBook,updateBook,selectedBook }) {
+
+    const [formData, setFormData] = useState({
+        title: "",
+        author: "",
+        pages: 0,
+        stock: 0,
+    });
+
+    useEffect(() => {
+        if (selectedBook) {
+            setFormData({
+            title: selectedBook.title,
+            author: selectedBook.author,
+            pages: selectedBook.pages,
+            stock: selectedBook.stock,
+        });
+        } else {
+            setFormData({
+            title: "",
+            author: "",
+            pages: 0,
+            stock: 0,
+        });
+        }
+    }, [selectedBook]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);

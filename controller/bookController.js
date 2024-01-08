@@ -6,8 +6,8 @@ exports.getAllBooks=async(req,res)=>{
 }
 
 exports.createBook=async(req, res)=>{
-    await Book.create(req.body);
-
+    const newBook=await Book.create(req.body);
+    res.status(201).json(newBook);
 }
 
 exports.getBook=async(req, res)=>{
@@ -32,6 +32,7 @@ exports.updateBook=async(req, res)=>{
 }
 
 exports.deleteBook=async(req, res)=>{
-    await Book.deleteOne({_id:req.params.id});
+    const deletedBook=await Book.deleteOne({_id:req.params.id});
     console.log(req.params.id);
+    res.json(deletedBook);
 }
