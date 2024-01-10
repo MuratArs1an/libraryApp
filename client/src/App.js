@@ -3,6 +3,7 @@ import BookList from './components/BookList';
 import BookForm from './components/BookForm';
 import {useState,useEffect} from "react"
 import axios from 'axios';
+import Navigation from './components/Navigation';
 
 function App() {
 
@@ -59,11 +60,15 @@ function App() {
 
   return (
     <div className="App">
-      LibraryApp
-      <div>
-        <BookForm addBook={addBook} selectedBook={selectedBook} updateBook={updateBook} />
-        <div>
-          <BookList books={books} removeBook={removeBook} updateBook={updateBook}/>
+      <Navigation />
+      <div className="container mt-5">
+        <div className="row">
+          <div className="col-md-4 mt-5">
+            <BookForm addBook={addBook} selectedBook={selectedBook} updateBook={updateBook} />
+          </div>
+          <div className="col-md-8 mt-5">
+            <BookList books={books} removeBook={removeBook} updateBook={updateBook} />
+          </div>
         </div>
       </div>
     </div>
