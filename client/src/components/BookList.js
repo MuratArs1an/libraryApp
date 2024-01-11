@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function BookList({ books, removeBook, updateBook }) {
+function BookList({ books, removeBook, updateBook}) {
     return (
         <div>
             <h3>Book List</h3>
@@ -24,7 +25,7 @@ function BookList({ books, removeBook, updateBook }) {
                             <td>
                                 <button className="btn btn-success" onClick={() => updateBook(index)}>Update</button>
                                 <button className="btn btn-danger" onClick={() => removeBook(index)}>Remove</button>
-                                <button className="btn btn-secondary">Details</button>
+                                <Link to={`/book/${index}`} className="btn btn-secondary">Details</Link>
                             </td>
                         </tr>
                     ))}

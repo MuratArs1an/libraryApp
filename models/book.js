@@ -11,7 +11,9 @@ const BookSchema=new Schema({
     title:String,
     author:String,
     pages:Number,
-    stock:Number
+    stock:Number,
+    image:String,
+    details:String
 })
 
 //şemamızı mongoose model olarak ekliyoruz 

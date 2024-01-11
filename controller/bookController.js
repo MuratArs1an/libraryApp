@@ -1,14 +1,47 @@
 const Book=require('../models/book');
+const fs=require('fs');
 
 exports.getAllBooks=async(req,res)=>{
     const books=await Book.find({})
     res.send(books)
 }
 
-exports.createBook=async(req, res)=>{
-    const newBook=await Book.create(req.body);
-    res.status(201).json(newBook);
-}
+exports.createBook = async (req, res) => {
+    const uploadDir = "public/uploads";
+
+    // Check if 'image' field is present in req.files
+    if (!req.files || !req.files.image) {
+        return res.status(400).json({ error: 'Image file is required' });
+    }
+
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir);
+    }
+
+    try {
+        const uploadedImage = req.files.image;
+        const uploadPath = __dirname + "/../public/uploads/" + uploadedImage.name;
+
+        uploadedImage.mv(uploadPath, async () => {
+            try {
+                const newBook = await Book.create({
+                    ...req.body,
+                    image: "/uploads/" + uploadedImage.name,
+                });
+
+                res.status(201).json(newBook);
+            } catch (error) {
+                console.error('Error creating book:', error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        });
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
 
 exports.getBook=async(req, res)=>{
     const book=await Book.findOne({_id:req.params.id})
