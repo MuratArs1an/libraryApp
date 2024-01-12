@@ -7,7 +7,7 @@ function BookForm({ addBook, updateBook, selectedBook }) {
         pages: 0,
         stock: 0,
         bookDetails: "",
-        image:File,
+        image:""
     });
 
     useEffect(() => {
@@ -18,7 +18,7 @@ function BookForm({ addBook, updateBook, selectedBook }) {
                 pages: selectedBook.pages,
                 stock: selectedBook.stock,
                 bookDetails: selectedBook.bookDetails,
-                image: File,
+                image:selectedBook.image
             });
         } else {
             setFormData({
@@ -27,7 +27,7 @@ function BookForm({ addBook, updateBook, selectedBook }) {
                 pages: 0,
                 stock: 0,
                 bookDetails: "",
-                image: File,
+                image: ""
             });
         }
     }, [selectedBook]);
@@ -41,22 +41,14 @@ function BookForm({ addBook, updateBook, selectedBook }) {
             pages: parseInt(formData.get("pages"), 10),
             stock: parseInt(formData.get("stock"), 10),
             bookDetails: formData.get("bookDetails"),
-            image:formData.get("image")
+            image: formData.get("image"),
         };
         addBook(newBook);
         e.target.reset();
     };
 
-    const handleFileChange = (e) => {
-        setFormData({ ...formData, image: e.target.files[0] });
-    };
-
-    const handlePhotoButtonClick = () => {
-        document.getElementById("imageInput").click();
-    };
-
     return (
-        <form onSubmit={handleSubmit} className="bg-light p-4 rounded">
+        <form onSubmit={handleSubmit} className="bg-light p-4 rounded" encType="multipart/form-data">
             <h2>{selectedBook ? "Edit Book" : "Add New Book"}</h2>
             <div className="mb-3">
                 <label htmlFor="title" className="form-label">
@@ -137,27 +129,13 @@ function BookForm({ addBook, updateBook, selectedBook }) {
                 <label htmlFor="photo" className="form-label">
                     Book Image
                 </label>
-                <div className="input-group">
-                    <input
-                        type="image"
-                        className="form-control"
-                        id="imageInput"
-                        name="image"
-                        onChange={handleFileChange}
-                        style={{ display: "none" }}
-                    />
-                    <button
-                        type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={handlePhotoButtonClick}
-                    >
-                        Choose Photo
-                    </button>
+                <div className="form-group">
+                <input type="file" name="image" className="form-control-file rounded-0" style={{marginBottom:10}} />
                 </div>
-            </div>
                 <button type="submit" className="btn btn-primary">
                     {selectedBook ? "Update Book" : "Add Book"}
                 </button>
+                </div>
         </form>
     );
 }

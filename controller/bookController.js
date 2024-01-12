@@ -1,5 +1,10 @@
 const Book=require('../models/book');
 const fs=require('fs');
+const express=require('express');
+const app=express();
+const fileUpload = require('express-fileupload');
+
+app.use(fileUpload());
 
 exports.getAllBooks=async(req,res)=>{
     const books=await Book.find({})
@@ -7,12 +12,8 @@ exports.getAllBooks=async(req,res)=>{
 }
 
 exports.createBook = async (req, res) => {
-    const uploadDir = "public/uploads";
-
-    // Check if 'image' field is present in req.files
-    if (!req.files || !req.files.image) {
-        return res.status(400).json({ error: 'Image file is required' });
-    }
+    console.log(req.files);
+    const uploadDir = "client/src/uploads";
 
     if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir);
@@ -20,7 +21,7 @@ exports.createBook = async (req, res) => {
 
     try {
         const uploadedImage = req.files.image;
-        const uploadPath = __dirname + "/../public/uploads/" + uploadedImage.name;
+        const uploadPath = uploadDir + "/" + uploadedImage.name;
 
         uploadedImage.mv(uploadPath, async () => {
             try {
@@ -40,6 +41,7 @@ exports.createBook = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
 
 

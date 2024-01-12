@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import BookList from "./BookList";
 import BookForm from './BookForm';
@@ -8,6 +9,8 @@ import BookDetails from './BookDetails';
 function BookManagement() {
     const [books, setBooks] = useState([]);
     const [selectedBook, setSelectedBook] = useState(null);
+    
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,7 +37,7 @@ function BookManagement() {
             formData.append("bookDetails", newBook.bookDetails);
 
             // Append the photo file to the FormData
-            formData.append("image", newBook.photo);
+            formData.append("image", newBook.image);
 
             const response = await axios.post('http://localhost:3000/book', formData, {
                 headers: {
@@ -47,6 +50,8 @@ function BookManagement() {
             console.error('Error adding book:', error);
         }
     };
+
+    const { index } = useParams();
     
 
     const removeBook = async (index) => {
@@ -76,7 +81,7 @@ function BookManagement() {
                 <div className="col-md-8 mt-5">
                     <Routes>
                         <Route path="/book" element={<BookList books={books} removeBook={removeBook} updateBook={updateBook} />} />
-                        <Route path="/book/:index" element={<BookDetails />} />
+                        <Route path="/book/:index" element={<BookDetails book={books[2]}/>} />
                     </Routes>
                 </div>
             </div>
