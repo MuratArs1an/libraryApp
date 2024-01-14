@@ -6,11 +6,13 @@ const routes=require('./routes/routes')
 const app=express();
 const fileUpload = require('express-fileupload');
 
+
 //middleWare
 app.use(fileUpload())
 app.use(cors());
 app.use(express.json());
 app.use(routes);
+app.use(express.static('client/src/images'))
 
 
 const port = 3000;

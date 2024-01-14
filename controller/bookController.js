@@ -13,7 +13,7 @@ exports.getAllBooks=async(req,res)=>{
 
 exports.createBook = async (req, res) => {
     console.log(req.files);
-    const uploadDir = "client/src/uploads";
+    const uploadDir = "client/public/images";
 
     if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir);
@@ -27,7 +27,7 @@ exports.createBook = async (req, res) => {
             try {
                 const newBook = await Book.create({
                     ...req.body,
-                    image: "/uploads/" + uploadedImage.name,
+                    image: "/images/" + uploadedImage.name,
                 });
 
                 res.status(201).json(newBook);

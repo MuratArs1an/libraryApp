@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import BookList from "./BookList";
 import BookForm from './BookForm';
 import BookDetails from './BookDetails';
+import { useSearch } from './SearchContext'
 
 function BookManagement() {
     const [books, setBooks] = useState([]);
     const [selectedBook, setSelectedBook] = useState(null);
-    
-
+    const { searchQuery } = useSearch();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,6 +25,8 @@ function BookManagement() {
         fetchData();
     }, []);
 
+
+
     const addBook = async (newBook) => {
         try {
             const formData = new FormData();
@@ -34,9 +35,7 @@ function BookManagement() {
             formData.append("author", newBook.author);
             formData.append("pages", newBook.pages);
             formData.append("stock", newBook.stock);
-            formData.append("bookDetails", newBook.bookDetails);
-
-            // Append the photo file to the FormData
+            formData.append("details", newBook.details);
             formData.append("image", newBook.image);
 
             const response = await axios.post('http://localhost:3000/book', formData, {
@@ -49,10 +48,7 @@ function BookManagement() {
         } catch (error) {
             console.error('Error adding book:', error);
         }
-    };
-
-    const { index } = useParams();
-    
+    };    
 
     const removeBook = async (index) => {
         try {
@@ -68,9 +64,24 @@ function BookManagement() {
         }
     };
 
-    const updateBook = (book) => {
-        setSelectedBook(book);
+    const selectBook=(index)=>{
+        const book=books[index];
+        setSelectedBook(book)
+    }
+
+    const updateBook = async (updatedBook) => {
+        try {
+            const response = await axios.put(`http://localhost:3000/book/edit/${selectedBook._id}`, updatedBook);
+            const updatedBooks = books.map(book => (book._id === selectedBook._id ? response.data : book));
+            setBooks(updatedBooks);
+            setSelectedBook(null); // Reset selectedBook after successful update
+            selectBook(null);
+        } catch (error) {
+            console.error('Error updating book:', error);
+        }
     };
+
+
 
     return (
         <div className="container">
@@ -80,8 +91,12 @@ function BookManagement() {
                 </div>
                 <div className="col-md-8 mt-5">
                     <Routes>
-                        <Route path="/book" element={<BookList books={books} removeBook={removeBook} updateBook={updateBook} />} />
-                        <Route path="/book/:index" element={<BookDetails book={books[2]}/>} />
+                        <Route path="/book" element= {<BookList books={books.filter(
+                        (book) =>
+                            book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            book.author.toLowerCase().includes(searchQuery.toLowerCase())
+                    )} removeBook={removeBook} selectBook={selectBook} />} />
+                        <Route path="/book/:index" element={<BookDetails book={books}/>} />
                     </Routes>
                 </div>
             </div>

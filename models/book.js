@@ -13,7 +13,7 @@ const BookSchema=new Schema({
     pages:Number,
     stock:Number,
     image:String,
-    details:String
+    details:String,
 })
 
 //şemamızı mongoose model olarak ekliyoruz 

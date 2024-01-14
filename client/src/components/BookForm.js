@@ -6,7 +6,7 @@ function BookForm({ addBook, updateBook, selectedBook }) {
         author: "",
         pages: 0,
         stock: 0,
-        bookDetails: "",
+        details: "",
         image:""
     });
 
@@ -17,7 +17,7 @@ function BookForm({ addBook, updateBook, selectedBook }) {
                 author: selectedBook.author,
                 pages: selectedBook.pages,
                 stock: selectedBook.stock,
-                bookDetails: selectedBook.bookDetails,
+                details: selectedBook.details,
                 image:selectedBook.image
             });
         } else {
@@ -26,24 +26,31 @@ function BookForm({ addBook, updateBook, selectedBook }) {
                 author: "",
                 pages: 0,
                 stock: 0,
-                bookDetails: "",
+                details: "",
                 image: ""
             });
         }
     }, [selectedBook]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
         const newBook = {
-            title: formData.get("title"),
-            author: formData.get("author"),
-            pages: parseInt(formData.get("pages"), 10),
-            stock: parseInt(formData.get("stock"), 10),
-            bookDetails: formData.get("bookDetails"),
-            image: formData.get("image"),
+            title: formData.title,
+            author: formData.author,
+            pages: parseInt(formData.pages, 10),
+            stock: parseInt(formData.stock, 10),
+            details: formData.details,
+            image: formData.image,
         };
-        addBook(newBook);
+    
+        if (selectedBook) {
+            // If selectedBook exists, it's an update
+            updateBook(newBook);
+        } else {
+            // If selectedBook doesn't exist, it's a new book
+            addBook(newBook);
+        }
+    
         e.target.reset();
     };
 
@@ -120,17 +127,18 @@ function BookForm({ addBook, updateBook, selectedBook }) {
                     id="details"
                     name="details"
                     placeholder="Enter book details"
-                    value={formData.bookDetails}
-                    onChange={(e) => setFormData({ ...formData, bookDetails: e.target.value })}
+                    value={formData.details}
+                    onChange={(e) => setFormData({ ...formData, details: e.target.value })}
                     required
                 />
             </div>
             <div className="mb-3">
-                <label htmlFor="photo" className="form-label">
+                <label htmlFor="image" className="form-label">
                     Book Image
                 </label>
                 <div className="form-group">
-                <input type="file" name="image" className="form-control-file rounded-0" style={{marginBottom:10}} />
+                <input type="file" name="image" className="form-control-file rounded-0" style={{marginBottom:10}}
+                onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })} />
                 </div>
                 <button type="submit" className="btn btn-primary">
                     {selectedBook ? "Update Book" : "Add Book"}
