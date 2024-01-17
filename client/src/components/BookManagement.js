@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import BookList from "./BookList";
 import BookForm from './BookForm';
@@ -10,6 +10,13 @@ function BookManagement() {
     const [books, setBooks] = useState([]);
     const [selectedBook, setSelectedBook] = useState(null);
     const { searchQuery } = useSearch();
+
+    const navigate = useNavigate();
+
+    const openBookFormPage = (book) => {
+        setSelectedBook(book);
+        navigate('/book/new'); 
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,7 +50,6 @@ function BookManagement() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
             setBooks((prevBooks) => [...prevBooks, response.data]);
         } catch (error) {
             console.error('Error adding book:', error);
@@ -81,22 +87,28 @@ function BookManagement() {
         }
     };
 
+    const updateBookList = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/book');
+            setBooks(response.data);
+        } catch (error) {
+            console.error('Error updating book list:', error);
+        }
+    };
 
 
     return (
         <div className="container">
             <div className="row">
-                <div className="col-md-4 mt-5">
-                    <BookForm addBook={addBook} selectedBook={selectedBook} updateBook={updateBook} />
-                </div>
-                <div className="col-md-8 mt-5">
+                <div className="col-md-12 mt-5">
                     <Routes>
                         <Route path="/book" element= {<BookList books={books.filter(
                         (book) =>
                             book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             book.author.toLowerCase().includes(searchQuery.toLowerCase())
-                    )} removeBook={removeBook} selectBook={selectBook} />} />
+                    )} removeBook={removeBook} openBookFormPage={openBookFormPage} updateBookList={updateBookList} />} />
                         <Route path="/book/:index" element={<BookDetails book={books}/>} />
+                        <Route path="/book/new" element={<BookForm addBook={addBook} updateBook={updateBook} selectedBook={selectedBook} updateBookList={updateBookList} />} />
                     </Routes>
                 </div>
             </div>

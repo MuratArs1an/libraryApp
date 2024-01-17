@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 
-function BookForm({ addBook, updateBook, selectedBook }) {
+function BookForm({ addBook, updateBook, selectedBook, updateBookList }) {
     const [formData, setFormData] = useState({
         title: "",
         author: "",
@@ -9,6 +11,12 @@ function BookForm({ addBook, updateBook, selectedBook }) {
         details: "",
         image:""
     });
+    const navigate = useNavigate();
+
+    const handleBack = () => {
+        // Navigate back to http://localhost:3001/book
+        navigate('/book');
+    }
 
     useEffect(() => {
         if (selectedBook) {
@@ -18,7 +26,7 @@ function BookForm({ addBook, updateBook, selectedBook }) {
                 pages: selectedBook.pages,
                 stock: selectedBook.stock,
                 details: selectedBook.details,
-                image:selectedBook.image
+                image: selectedBook.image
             });
         } else {
             setFormData({
@@ -45,12 +53,13 @@ function BookForm({ addBook, updateBook, selectedBook }) {
     
         if (selectedBook) {
             // If selectedBook exists, it's an update
-            updateBook(newBook);
+            await updateBook(newBook);
+            await updateBookList();
         } else {
             // If selectedBook doesn't exist, it's a new book
             addBook(newBook);
         }
-    
+        navigate('/book')
         e.target.reset();
     };
 
@@ -143,6 +152,7 @@ function BookForm({ addBook, updateBook, selectedBook }) {
                 <button type="submit" className="btn btn-primary">
                     {selectedBook ? "Update Book" : "Add Book"}
                 </button>
+                <Button variant="danger" onClick={handleBack} style={{float: 'right'}}>Back</Button>
                 </div>
         </form>
     );

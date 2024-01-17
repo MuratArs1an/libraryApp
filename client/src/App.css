@@ -58,3 +58,6 @@ input {
   padding: 8px;
   margin: 5px;
 }
+.card {
+  flex-direction: row;
+}

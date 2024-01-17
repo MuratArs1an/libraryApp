@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function BookList({ books, removeBook,selectBook}) {
+
+function BookList({ books, removeBook,updateBookList, openBookFormPage}) {
 
     return (
         <div>
-            <h3>Book List</h3>
+            <h1 style={{textAlign:"center"}}>Book List</h1>
             <table className="table">
                 <thead>
                     <tr>
@@ -24,14 +25,17 @@ function BookList({ books, removeBook,selectBook}) {
                             <td>{book.pages}</td>
                             <td>{book.stock}</td>
                             <td>
-                                <button className="btn btn-success" onClick={() => selectBook(index)}>Update</button>
-                                <button className="btn btn-danger" onClick={() => removeBook(index)}>Remove</button>
-                                <Link to={`/book/${index}`} className="btn btn-secondary">Details</Link>
+                                <button className="btn btn-success ms-5" onClick={() => openBookFormPage(book)}>Update</button>
+                                <button className="btn btn-danger ms-2" onClick={() => removeBook(index)}>Remove</button>
+                                <Link to={`/book/${index}`} className="btn btn-secondary ms-2">Details</Link>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <div className="d-grid gap-2">
+                <button className="btn btn-info" onClick={()=>openBookFormPage()}>Add Book</button>
+            </div>
         </div>
     );
 }
