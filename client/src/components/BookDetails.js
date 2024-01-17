@@ -2,6 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useNavigate, useParams } from "react-router-dom";
+import {CartFill} from "react-bootstrap-icons"
 
 function BookDetails({ book }) {
     const navigate = useNavigate();
@@ -27,6 +28,7 @@ function BookDetails({ book }) {
                     <strong>Details:</strong> {selectedBook.details}
                 </Card.Text>
                 <Button variant="primary" onClick={handleBack}>Back</Button>
+                <Button variant="secondary" style={{ marginLeft: '150px'}}><CartFill /></Button>
             </Card.Body>
         </Card>
     );

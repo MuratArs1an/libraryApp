@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Route, Routes } from "react-router-dom";
 import axios from 'axios';
 import BookList from "./BookList";
 import BookForm from './BookForm';
@@ -52,7 +52,7 @@ function BookManagement() {
 
     const removeBook = async (index) => {
         try {
-            const bookId = books[index]._id;
+            const bookId = books[index].id;
             await axios.delete(`http://localhost:3000/book/${bookId}`);
             setBooks((prevBooks) => {
                 const updatedBooks = [...prevBooks];
@@ -71,8 +71,8 @@ function BookManagement() {
 
     const updateBook = async (updatedBook) => {
         try {
-            const response = await axios.put(`http://localhost:3000/book/edit/${selectedBook._id}`, updatedBook);
-            const updatedBooks = books.map(book => (book._id === selectedBook._id ? response.data : book));
+            const response = await axios.put(`http://localhost:3000/book/edit/${selectedBook.id}`, updatedBook);
+            const updatedBooks = books.map(book => (book._id === selectedBook.id ? response.data : book));
             setBooks(updatedBooks);
             setSelectedBook(null); // Reset selectedBook after successful update
             selectBook(null);
