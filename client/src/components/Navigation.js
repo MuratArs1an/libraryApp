@@ -5,21 +5,31 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useSearch } from './SearchContext';
 import { useState } from 'react';
+import { CartFill } from "react-bootstrap-icons"
+import { useCart } from './CartContext';
+import { useNavigate } from 'react-router-dom';
 
 function Navigation() {
-    
+
     const { searchQuery, setSearchQuery } = useSearch();
     const [searchInput, setSearchInput] = useState('');
+    const { state } = useCart();
+    const navigate = useNavigate();
+
 
     const handleSearch = (e) => {
         e.preventDefault();
         setSearchQuery(searchInput);
     };
 
+    const handleToggleCartList = () => {
+        navigate('/cart');
+    };
+
     return (
-        <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="dark" fixed="top" style={{ marginBottom:"50px" }}>
+        <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="dark" fixed="top" style={{ marginBottom: "50px" }}>
             <Container fluid>
-                <Navbar.Brand href="#">Home</Navbar.Brand>
+                <Navbar.Brand href="/book">Home</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
@@ -45,6 +55,11 @@ function Navigation() {
                         style={{ maxHeight: '100px' }}
                         navbarScroll
                     >
+                        <Nav.Link href="#action3" style={{ marginRight: '20px' }}>
+                            <div onClick={handleToggleCartList}>
+                                <CartFill size={25} color="gold" />
+                            </div>
+                        </Nav.Link>
                         <Button variant="outline-warning" href="#action1">Sign In</Button>
                         <Button variant="outline-light" href="#action2">Sign Up</Button>
                     </Nav>

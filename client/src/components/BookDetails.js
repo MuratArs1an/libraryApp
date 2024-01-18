@@ -3,16 +3,25 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useNavigate, useParams } from "react-router-dom";
 import { CartFill } from "react-bootstrap-icons"
+import { useCart } from './CartContext';
 
 function BookDetails({ book }) {
     const navigate = useNavigate();
     const params = useParams();
     const index = params.index
+    const { dispatch } = useCart();
 
     const handleBack = () => {
         // Navigate back to http://localhost:3001/book
         navigate('/book');
     }
+
+    const handleAddToCart = () => {
+        const selectedBook = book[index];
+        console.log(selectedBook);
+        dispatch({ type: 'ADD_TO_CART', payload: selectedBook });
+        
+    };
 
     const selectedBook = book[index];
 
@@ -25,8 +34,8 @@ function BookDetails({ book }) {
             />
             <Card.Body className="d-flex flex-column" style={{float:'right'}}>
                 <div className="flex-grow-1">
-                    <Card.Title style={{fontSize:'80px'}}>{selectedBook.title}</Card.Title>
-                    <Card.Text style={{fontSize:'25px'}}>
+                    <Card.Title style={{fontSize:'60px'}}>{selectedBook.title}</Card.Title>
+                    <Card.Text style={{fontSize:'20px'}}>
                         <strong>Author: </strong> {selectedBook.author}<br />
                         <strong>Pages:</strong> {selectedBook.pages}<br />
                         <strong>Stock:</strong> {selectedBook.stock}<br />
@@ -37,7 +46,7 @@ function BookDetails({ book }) {
                     <Button variant="primary" onClick={handleBack}>
                         Back
                     </Button>
-                    <Button variant="secondary" style={{ marginLeft: '10px' }}>
+                    <Button onClick={handleAddToCart} variant="secondary" style={{ marginLeft: '10px' }}>
                         <CartFill />
                     </Button>
                 </div>

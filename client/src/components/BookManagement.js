@@ -4,13 +4,14 @@ import axios from 'axios';
 import BookList from "./BookList";
 import BookForm from './BookForm';
 import BookDetails from './BookDetails';
-import { useSearch } from './SearchContext'
+import { useSearch } from './SearchContext';
+import CartList from "./CardList";
+import CardPage from "./CardPage";
 
-function BookManagement() {
+function BookManagement({ showCartList}) {
     const [books, setBooks] = useState([]);
     const [selectedBook, setSelectedBook] = useState(null);
     const { searchQuery } = useSearch();
-
     const navigate = useNavigate();
 
     const openBookFormPage = (book) => {
@@ -31,8 +32,6 @@ function BookManagement() {
 
         fetchData();
     }, []);
-
-
 
     const addBook = async (newBook) => {
         try {
@@ -109,6 +108,7 @@ function BookManagement() {
                     )} removeBook={removeBook} openBookFormPage={openBookFormPage} updateBookList={updateBookList} />} />
                         <Route path="/book/:index" element={<BookDetails book={books}/>} />
                         <Route path="/book/new" element={<BookForm addBook={addBook} updateBook={updateBook} selectedBook={selectedBook} updateBookList={updateBookList} />} />
+                        <Route path="/cart" element={<CardPage />} />
                     </Routes>
                 </div>
             </div>
