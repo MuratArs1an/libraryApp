@@ -58,6 +58,9 @@ function Navigation() {
                         <Nav.Link href="#action3" style={{ marginRight: '20px' }}>
                             <div onClick={handleToggleCartList}>
                                 <CartFill size={25} color="gold" />
+                                {state.length > 0 && (
+                                    <span className="cart-count">{state.length}</span>
+                                )}
                             </div>
                         </Nav.Link>
                         <Button variant="outline-warning" href="#action1">Sign In</Button>

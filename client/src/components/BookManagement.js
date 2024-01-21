@@ -5,10 +5,9 @@ import BookList from "./BookList";
 import BookForm from './BookForm';
 import BookDetails from './BookDetails';
 import { useSearch } from './SearchContext';
-import CartList from "./CardList";
 import CardPage from "./CardPage";
 
-function BookManagement({ showCartList}) {
+function BookManagement() {
     const [books, setBooks] = useState([]);
     const [selectedBook, setSelectedBook] = useState(null);
     const { searchQuery } = useSearch();

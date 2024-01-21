@@ -6,15 +6,15 @@ function BookList({ books, removeBook,updateBookList, openBookFormPage}) {
 
     return (
         <div>
-            <h1 style={{textAlign:"center"}}>Book List</h1>
+            <h1 style={{textAlign:"center", fontWeight:"bold"}}>Book List</h1>
             <table className="table">
                 <thead>
                     <tr>
-                        <th>Book Name</th>
-                        <th>Author</th>
-                        <th>Book Pages</th>
-                        <th>Stock</th>
-                        <th></th>
+                        <th style={{ backgroundColor: 'gray', color: 'gold' }}>BOOK NAME</th>
+                        <th style={{ backgroundColor: 'gray', color: 'gold' }}>AUTHOR</th>
+                        <th style={{ backgroundColor: 'gray', color: 'gold' }}>BOOK PAGE</th>
+                        <th style={{ backgroundColor: 'gray', color: 'gold' }}>STOCK</th>
+                        <th style={{ backgroundColor: 'gray', color: 'gold' }}></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,8 +33,8 @@ function BookList({ books, removeBook,updateBookList, openBookFormPage}) {
                     ))}
                 </tbody>
             </table>
-            <div className="d-grid gap-2">
-                <button className="btn btn-info" onClick={()=>openBookFormPage()}>Add Book</button>
+            <div className="d-flex justify-content-center">
+                <button  style={{width:"400px", color:"white" , fontWeight: 'bold'}} className="btn btn-info" onClick={()=>openBookFormPage()}>Add Book</button>
             </div>
         </div>
     );

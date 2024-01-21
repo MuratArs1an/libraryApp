@@ -6,6 +6,7 @@ import { CartProvider } from "./components/CartContext";
 import { useState } from "react";
 
 
+
 function App() {
     const [showCartList, setShowCartList] = useState(false);
 
@@ -17,7 +18,7 @@ function App() {
                         <div className="mb-5">
                             <Navigation showCartList={showCartList} setShowCartList={setShowCartList} />
                         </div>
-                        <BookManagement  showCartList={showCartList} className="mt-5" />
+                        <BookManagement className="mt-5" />
                     </CartProvider>
                 </SearchProvider>
             </Router>

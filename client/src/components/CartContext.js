@@ -10,7 +10,6 @@ const cartReducer = (state, action) => {
     switch (action.type) {
         case 'ADD_TO_CART':
             return { ...state, cartList: [...state.cartList, action.payload] };
-        // Add other cart-related actions if needed
         default:
             return state;
     }
