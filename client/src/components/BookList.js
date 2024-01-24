@@ -20,10 +20,10 @@ function BookList({ books, removeBook,updateBookList, openBookFormPage}) {
                 <tbody>
                     {books.map((book, index) => (
                         <tr key={index}>
-                            <td>{book.title}</td>
-                            <td>{book.author}</td>
-                            <td>{book.pages}</td>
-                            <td>{book.stock}</td>
+                            <td title="title">{book.title}</td>
+                            <td title="author">{book.author}</td>
+                            <td title="pages">{book.pages}</td>
+                            <td title="stock">{book.stock}</td>
                             <td>
                                 <button className="btn btn-success ms-5" onClick={() => openBookFormPage(book)}>Update</button>
                                 <button className="btn btn-danger ms-2" onClick={() => removeBook(index)}>Remove</button>
